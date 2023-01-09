@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './App.scss';
 import { TodoList } from './components/TodoList/TodoList';
 import { v1 } from 'uuid';
+import { V4MAPPED } from 'dns';
 
 export type TaskType = { id: string; title: string; isDone: boolean };
 
@@ -28,23 +29,30 @@ function App() {
     setFilter(value);
   };
 
-  let filterTasks = tasksForTodoList;
+  const addTask = (title: string) => {
+    setTasksForTodoList([...tasksForTodoList, { id: v1(), title, isDone: false }]);
+  };
 
-  if (filter === 'active') {
-    filterTasks = tasksForTodoList.filter(task => !task.isDone);
-  } else if (filter === 'completed') {
-    filterTasks = tasksForTodoList.filter(task => !!task.isDone);
-  }
+  const getFilteredTask = (task: Array<TaskType>, filter: FilterValueType): Array<TaskType> => {
+    switch (filter) {
+      case 'active':
+        return task.filter(task => !task.isDone);
+      case 'completed':
+        return task.filter(task => task.isDone);
+      default:
+        return task;
+    }
+  };
 
-  // GUI:
   return (
     <div className="app">
       <TodoList
         title={todoListTitle}
-        tasks={filterTasks}
+        tasks={getFilteredTask(tasksForTodoList, filter)}
         onDelete={onDelete}
         filter={filter}
         changeFilter={changeFilter}
+        addTask={addTask}
       />
       {/* <TodoList title={'What to by'} /> */}
     </div>
