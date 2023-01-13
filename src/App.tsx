@@ -10,11 +10,10 @@ export type FilterValueType = 'all' | 'active' | 'completed';
 
 function App() {
   const [tasksForTodoList, setTasksForTodoList] = useState<Array<TaskType>>([
-    { id: v1(), title: 'HTML&CSS', isDone: true },
+    { id: v1(), title: 'HTML & CSS', isDone: true },
     { id: v1(), title: 'JS & TS', isDone: true },
     { id: v1(), title: 'React', isDone: false },
   ]);
-
   const [filter, setFilter] = useState<FilterValueType>('all');
 
   // BLL:
@@ -23,6 +22,10 @@ function App() {
 
   const onDelete = (id: string) => {
     setTasksForTodoList(tasksForTodoList.filter(tasks => tasks.id !== id));
+  };
+
+  const chageTaskStatus = (id: string) => {
+    setTasksForTodoList(tasksForTodoList.map(t => (t.id === id ? { ...t, isDone: !t.isDone } : t)));
   };
 
   const changeFilter = (value: FilterValueType) => {
@@ -53,6 +56,7 @@ function App() {
         filter={filter}
         changeFilter={changeFilter}
         addTask={addTask}
+        chageTaskStatus={chageTaskStatus}
       />
       {/* <TodoList title={'What to by'} /> */}
     </div>

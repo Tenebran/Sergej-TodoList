@@ -8,6 +8,7 @@ type TodoListPropsType = {
   filter: FilterValueType;
   changeFilter: (value: FilterValueType) => void;
   addTask: (title: string) => void;
+  chageTaskStatus: (id: string) => void;
 };
 
 export const TodoList = (props: TodoListPropsType) => {
@@ -45,7 +46,12 @@ export const TodoList = (props: TodoListPropsType) => {
             const removeTask = () => props.onDelete(task.id);
             return (
               <li key={task.id}>
-                <input type="checkbox" checked={task.isDone} /> <span>{task.title}</span>
+                <input
+                  type="checkbox"
+                  checked={task.isDone}
+                  onChange={() => props.chageTaskStatus(task.id)}
+                />{' '}
+                <span>{task.title}</span>
                 <button onClick={removeTask}> X</button>
               </li>
             );
