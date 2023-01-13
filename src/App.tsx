@@ -24,8 +24,8 @@ function App() {
     setTasksForTodoList(tasksForTodoList.filter(tasks => tasks.id !== id));
   };
 
-  const chageTaskStatus = (id: string) => {
-    setTasksForTodoList(tasksForTodoList.map(t => (t.id === id ? { ...t, isDone: !t.isDone } : t)));
+  const chageTaskStatus = (id: string, isDone: boolean) => {
+    setTasksForTodoList(tasksForTodoList.map(t => (t.id === id ? { ...t, isDone } : t)));
   };
 
   const changeFilter = (value: FilterValueType) => {
