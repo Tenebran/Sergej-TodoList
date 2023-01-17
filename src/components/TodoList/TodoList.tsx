@@ -4,11 +4,12 @@ import { FilterValueType, TaskType } from '../../App';
 type TodoListPropsType = {
   title: string;
   tasks: Array<TaskType>;
-  onDelete: (id: string) => void;
+  onDelete: (id: string, todolistID: string) => void;
   filter: FilterValueType;
-  changeFilter: (value: FilterValueType) => void;
-  addTask: (title: string) => void;
-  chageTaskStatus: (id: string, isDone: boolean) => void;
+  changeFilter: (value: FilterValueType, todolistID: string) => void;
+  addTask: (title: string, todolistID: string) => void;
+  chageTaskStatus: (id: string, isDone: boolean, todolistID: string) => void;
+  todolistId: string;
 };
 
 export const TodoList = (props: TodoListPropsType) => {
@@ -18,7 +19,7 @@ export const TodoList = (props: TodoListPropsType) => {
   const addTask = () => {
     const trimmedTitle = title?.trim();
     if (trimmedTitle) {
-      props.addTask(trimmedTitle);
+      props.addTask(trimmedTitle, props.todolistId);
     } else {
       setError(true);
     }
@@ -36,7 +37,8 @@ export const TodoList = (props: TodoListPropsType) => {
     error && setError(false);
   };
 
-  const onCklickHandlerCreator = (value: FilterValueType) => () => props.changeFilter(value);
+  const onCklickHandlerCreator = (value: FilterValueType) => () =>
+    props.changeFilter(value, props.todolistId);
 
   return (
     <div>
@@ -54,9 +56,9 @@ export const TodoList = (props: TodoListPropsType) => {
       {props.tasks.length ? (
         <ul>
           {props.tasks.map(task => {
-            const removeTask = () => props.onDelete(task.id);
+            const removeTask = () => props.onDelete(task.id, props.todolistId);
             const changeTaskStatus = (e: ChangeEvent<HTMLInputElement>) =>
-              props.chageTaskStatus(task.id, e.currentTarget.checked);
+              props.chageTaskStatus(task.id, e.currentTarget.checked, props.todolistId);
             return (
               <li key={task.id}>
                 <input type="checkbox" checked={task.isDone} onChange={e => changeTaskStatus(e)} />
