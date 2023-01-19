@@ -10,6 +10,7 @@ type TodoListPropsType = {
   addTask: (title: string, todolistID: string) => void;
   chageTaskStatus: (id: string, isDone: boolean, todolistID: string) => void;
   todolistId: string;
+  removeTodolist: (id: string) => void;
 };
 
 export const TodoList = (props: TodoListPropsType) => {
@@ -42,7 +43,10 @@ export const TodoList = (props: TodoListPropsType) => {
 
   return (
     <div>
-      <h3>{props.title}</h3>
+      <h3>
+        {props.title} <button onClick={() => props.removeTodolist(props.todolistId)}>X</button>
+      </h3>
+
       <div>
         <input
           value={title}

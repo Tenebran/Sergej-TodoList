@@ -7,7 +7,7 @@ export type TaskType = { id: string; title: string; isDone: boolean };
 
 export type FilterValueType = 'all' | 'active' | 'completed';
 
-export type TodoKistType = {
+export type TodoListType = {
   id: string;
   title: string;
   filter: FilterValueType;
@@ -33,7 +33,7 @@ function App() {
       { id: v1(), title: 'Wheat', isDone: false },
     ],
   });
-  const [todoLists, setTodoList] = useState<TodoKistType[]>([
+  const [todoLists, setTodoList] = useState<TodoListType[]>([
     {
       id: id_1,
       title: 'What to learn',
@@ -51,6 +51,11 @@ function App() {
     setTasks({ ...tasks, [todolistID]: tasks[todolistID].filter(list => list.id !== id) });
   };
 
+  const removeTodolist = (id: string) => {
+    setTodoList(todoLists.filter(tl => tl.id !== id));
+    delete tasks[id];
+  };
+
   const chageTaskStatus = (id: string, isDone: boolean, todolistID: string) => {
     setTasks({
       ...tasks,
@@ -65,7 +70,7 @@ function App() {
   const addTask = (title: string, todolistID: string) => {
     setTasks({
       ...tasks,
-      [todolistID]: [...tasks[todolistID], { id: v1(), title, isDone: false }],
+      [todolistID]: [{ id: v1(), title, isDone: false }, ...tasks[todolistID]],
     });
   };
 
@@ -82,9 +87,10 @@ function App() {
 
   return (
     <div className="app">
-      {todoLists.map(t => {
+      {todoLists.map((t: TodoListType) => {
         return (
           <TodoList
+            key={t.id}
             title={t.title}
             tasks={getFilteredTask(tasks[t.id], t.filter)}
             onDelete={onDelete}
@@ -93,6 +99,7 @@ function App() {
             addTask={addTask}
             chageTaskStatus={chageTaskStatus}
             todolistId={t.id}
+            removeTodolist={removeTodolist}
           />
         );
       })}
