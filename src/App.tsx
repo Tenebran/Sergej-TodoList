@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import './App.scss';
 import { TodoList } from './components/TodoList/TodoList';
 import { v1 } from 'uuid';
+import { AddItemForm } from './components/AddItemForm/AddItemForm';
+import { title } from 'process';
 
 export type TaskType = { id: string; title: string; isDone: boolean };
 
@@ -51,6 +53,15 @@ function App() {
     setTasks({ ...tasks, [todolistID]: tasks[todolistID].filter(list => list.id !== id) });
   };
 
+  const addTodolist = (title: string) => {
+    const newTodolist: TodoListType = {
+      id: v1(),
+      title,
+      filter: 'all',
+    };
+    setTodoList([...todoLists, newTodolist]);
+    setTasks({ ...tasks, [newTodolist.id]: [] });
+  };
   const removeTodolist = (id: string) => {
     setTodoList(todoLists.filter(tl => tl.id !== id));
     delete tasks[id];
@@ -63,7 +74,7 @@ function App() {
     });
   };
 
-  const changeFilter = (value: FilterValueType, todolistID: string) => {
+  const changeTaskFilter = (value: FilterValueType, todolistID: string) => {
     setTodoList(todoLists.map(t => (t.id === todolistID ? { ...t, filter: value } : t)));
   };
 
@@ -85,22 +96,40 @@ function App() {
     }
   };
 
+  const changeTaskTitle = (taskId: string, title: string, todolistID: string) => {
+    setTasks({
+      ...tasks,
+      [todolistID]: tasks[todolistID].map(t => (t.id === taskId ? { ...t, title } : t)),
+    });
+  };
+
+  const changeTodolistTitle = (title: string, todolistId: string) => {
+    setTodoList(todoLists.map(t => (t.id === todolistId ? { ...t, title } : t)));
+  };
+
   return (
     <div className="app">
+      <div style={{ display: 'block', margin: '0 0 100px' }}>
+        <AddItemForm addItem={addTodolist} />
+      </div>
       {todoLists.map((t: TodoListType) => {
         return (
-          <TodoList
-            key={t.id}
-            title={t.title}
-            tasks={getFilteredTask(tasks[t.id], t.filter)}
-            onDelete={onDelete}
-            filter={t.filter}
-            changeFilter={changeFilter}
-            addTask={addTask}
-            chageTaskStatus={chageTaskStatus}
-            todolistId={t.id}
-            removeTodolist={removeTodolist}
-          />
+          <>
+            <TodoList
+              key={t.id}
+              title={t.title}
+              tasks={getFilteredTask(tasks[t.id], t.filter)}
+              onDelete={onDelete}
+              filter={t.filter}
+              changeFilter={changeTaskFilter}
+              addTask={addTask}
+              chageTaskStatus={chageTaskStatus}
+              todolistId={t.id}
+              removeTodolist={removeTodolist}
+              changeTaskTitle={changeTaskTitle}
+              changeTodolistTitle={changeTodolistTitle}
+            />
+          </>
         );
       })}
     </div>
