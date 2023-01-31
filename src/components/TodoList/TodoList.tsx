@@ -1,3 +1,4 @@
+import { Button } from '@mui/material';
 import React, { ChangeEvent } from 'react';
 import { FilterValueType, TaskType } from '../../App';
 import { AddItemForm } from '../AddItemForm/AddItemForm';
@@ -60,24 +61,27 @@ export const TodoList = (props: TodoListPropsType) => {
         <span>Your list is empty</span>
       )}
       <div>
-        <button
-          className={props.filter === 'all' ? 'btn-active' : ''}
+        <Button
+          size="small"
+          variant={props.filter === 'all' ? 'contained' : 'outlined'}
           onClick={onCklickHandlerCreator('all')}
         >
           All
-        </button>
-        <button
+        </Button>
+        <Button
+          size="small"
+          variant={props.filter === 'active' ? 'contained' : 'outlined'}
           onClick={onCklickHandlerCreator('active')}
-          className={props.filter === 'active' ? 'btn-active' : ''}
         >
           Active
-        </button>
-        <button
+        </Button>
+        <Button
+          size="small"
+          variant={props.filter === 'completed' ? 'contained' : 'outlined'}
           onClick={onCklickHandlerCreator('completed')}
-          className={props.filter === 'completed' ? 'btn-active' : ''}
         >
           Completed
-        </button>
+        </Button>
       </div>
     </div>
   );
