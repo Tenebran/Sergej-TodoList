@@ -3,7 +3,11 @@ import './App.scss';
 import { TodoList } from './components/TodoList/TodoList';
 import { v1 } from 'uuid';
 import { AddItemForm } from './components/AddItemForm/AddItemForm';
-import { title } from 'process';
+import { Box, AppBar, Toolbar, IconButton, Typography, Button } from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
+import { Container } from '@mui/system';
+import Grid from '@mui/material/Grid';
+import Paper from '@mui/material/Paper';
 
 export type TaskType = { id: string; title: string; isDone: boolean };
 
@@ -109,29 +113,46 @@ function App() {
 
   return (
     <div className="app">
-      <div style={{ display: 'block', margin: '0 0 100px' }}>
-        <AddItemForm addItem={addTodolist} />
-      </div>
-      {todoLists.map((t: TodoListType) => {
-        return (
-          <>
-            <TodoList
-              key={t.id}
-              title={t.title}
-              tasks={getFilteredTask(tasks[t.id], t.filter)}
-              onDelete={onDelete}
-              filter={t.filter}
-              changeFilter={changeTaskFilter}
-              addTask={addTask}
-              chageTaskStatus={chageTaskStatus}
-              todolistId={t.id}
-              removeTodolist={removeTodolist}
-              changeTaskTitle={changeTaskTitle}
-              changeTodolistTitle={changeTodolistTitle}
-            />
-          </>
-        );
-      })}
+      <AppBar position="sticky">
+        <Toolbar>
+          <IconButton size="large" edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            News
+          </Typography>
+          <Button color="inherit">Login</Button>
+        </Toolbar>
+      </AppBar>
+      <Container fixed>
+        <Grid container sx={{ p: '20px 0 40px' }}>
+          <AddItemForm addItem={addTodolist} />
+        </Grid>
+        <Grid container spacing={6}>
+          {todoLists.map((t: TodoListType) => {
+            return (
+              <Grid item>
+                <Paper sx={{ p: '20px' }} elevation={16}>
+                  <TodoList
+                    key={t.id}
+                    title={t.title}
+                    tasks={getFilteredTask(tasks[t.id], t.filter)}
+                    onDelete={onDelete}
+                    filter={t.filter}
+                    changeFilter={changeTaskFilter}
+                    addTask={addTask}
+                    chageTaskStatus={chageTaskStatus}
+                    todolistId={t.id}
+                    removeTodolist={removeTodolist}
+                    changeTaskTitle={changeTaskTitle}
+                    changeTodolistTitle={changeTodolistTitle}
+                  />
+                </Paper>
+              </Grid>
+            );
+          })}
+        </Grid>
+      </Container>
     </div>
   );
 }

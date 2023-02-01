@@ -1,30 +1,8 @@
-.app {
-  padding: 30px;
-  display: flex;
-  div {
-    margin-right: 50px;
-  }
-}
-
-.btn-active {
-  background-color: rgb(140, 140, 233);
-  color: wheat;
-  cursor: pointer;
-}
-
 .taskIsDone {
-  background-color: aquamarine;
   font-weight: 800;
+  color: #1565c0;
 }
 
 .input-error {
   border: red 2px solid;
-}
-
-.error {
-  color: red;
-  font-weight: 900;
-  font-size: 14px;
-  text-align: center;
-  width: 100%;
 }

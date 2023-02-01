@@ -1,8 +1,10 @@
-import { Button } from '@mui/material';
+import { Button, Checkbox, IconButton, List, ListItem, Typography } from '@mui/material';
 import React, { ChangeEvent } from 'react';
 import { FilterValueType, TaskType } from '../../App';
 import { AddItemForm } from '../AddItemForm/AddItemForm';
 import { EditTableSpan } from '../EditTableSpan/EditTableSpan';
+import DeleteIcon from '@mui/icons-material/Delete';
+import ButtonGroup from '@mui/material/ButtonGroup';
 
 type TodoListPropsType = {
   title: string;
@@ -32,13 +34,15 @@ export const TodoList = (props: TodoListPropsType) => {
 
   return (
     <div>
-      <h3>
+      <Typography variant="h5" align="center">
         <EditTableSpan title={props.title} changeTilte={changeTaskTitle} />
-        <button onClick={() => props.removeTodolist(props.todolistId)}>X</button>
-      </h3>
+        <IconButton onClick={() => props.removeTodolist(props.todolistId)}>
+          <DeleteIcon color="primary" fontSize="medium" />
+        </IconButton>
+      </Typography>
       <AddItemForm addItem={addNewTask} />
       {props.tasks.length ? (
-        <ul>
+        <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
           {props.tasks.map(task => {
             const removeTask = () => props.onDelete(task.id, props.todolistId);
             const changeTaskStatus = (e: ChangeEvent<HTMLInputElement>) =>
@@ -47,42 +51,50 @@ export const TodoList = (props: TodoListPropsType) => {
               props.changeTaskTitle(task.id, title, props.todolistId);
             };
             return (
-              <li key={task.id}>
-                <input type="checkbox" checked={task.isDone} onChange={e => changeTaskStatus(e)} />
+              <ListItem key={task.id} sx={{ p: '0' }}>
+                <Checkbox
+                  checked={task.isDone}
+                  defaultChecked
+                  size="small"
+                  onChange={e => changeTaskStatus(e)}
+                />
                 <div className={task.isDone ? 'taskIsDone' : ''} style={{ display: 'inline' }}>
                   <EditTableSpan title={task.title} changeTilte={changeTaskTitle} />
                 </div>
-                <button onClick={removeTask}> X</button>
-              </li>
+                <IconButton onClick={removeTask}>
+                  <DeleteIcon color="primary" fontSize="small" />
+                </IconButton>
+              </ListItem>
             );
           })}
-        </ul>
+        </List>
       ) : (
         <span>Your list is empty</span>
       )}
-      <div>
+
+      <ButtonGroup fullWidth size="small">
         <Button
-          size="small"
+          sx={{ marginRight: '3px', fontSize: '12px', p: '4px 4px' }}
           variant={props.filter === 'all' ? 'contained' : 'outlined'}
           onClick={onCklickHandlerCreator('all')}
         >
           All
         </Button>
         <Button
-          size="small"
+          sx={{ marginRight: '3px', fontSize: '12px', p: '4px 4px' }}
           variant={props.filter === 'active' ? 'contained' : 'outlined'}
           onClick={onCklickHandlerCreator('active')}
         >
           Active
         </Button>
         <Button
-          size="small"
+          sx={{ fontSize: '12px', p: '4px 4px' }}
           variant={props.filter === 'completed' ? 'contained' : 'outlined'}
           onClick={onCklickHandlerCreator('completed')}
         >
           Completed
         </Button>
-      </div>
+      </ButtonGroup>
     </div>
   );
 };

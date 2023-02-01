@@ -1,3 +1,4 @@
+import { styled, TextField } from '@mui/material';
 import React, { useState } from 'react';
 
 type EditTableSpanPropsType = {
@@ -8,6 +9,12 @@ type EditTableSpanPropsType = {
 export const EditTableSpan = (props: EditTableSpanPropsType) => {
   const [isEditMode, setIsEditMode] = useState<boolean>(false);
   const [title, setTitle] = useState<string>(props.title);
+
+  const StyledTextField = styled(TextField)(({ theme }) => ({
+    '& .MuiInputBase-input': {
+      padding: 4,
+    },
+  }));
 
   const offEditMode = () => {
     setIsEditMode(false);
@@ -28,12 +35,22 @@ export const EditTableSpan = (props: EditTableSpanPropsType) => {
   return (
     <>
       {isEditMode ? (
-        <input
-          value={title}
+        // <input
+        //   value={title}
+        //   autoFocus
+        //   onBlur={offEditMode}
+        //   onChange={onChangeTitle}
+        //   onKeyDown={onKeyDownOffEditMode}
+        // />
+        <StyledTextField
           autoFocus
+          label={'Title'}
+          variant="standard"
+          value={title}
           onBlur={offEditMode}
           onChange={onChangeTitle}
           onKeyDown={onKeyDownOffEditMode}
+          sx={{ padding: '0px' }}
         />
       ) : (
         <span onDoubleClick={onEditMode}>{props.title}</span>
