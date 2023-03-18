@@ -2,11 +2,12 @@
 // 2. Задача - только преобразование стэйта
 // 3. Вернуть новый стэйт
 import { v1 } from 'uuid';
-import { TodoListType } from '../App';
+import { FilterValueType, TodoListType } from '../App';
 
 export const REMOVE_TODOLIST = 'REMOVE-TODOLIST' as const;
 export const ADD_TODOLIST = 'ADD-TODOLIST' as const;
 export const CHANGE_TITLE = 'CHANGE-TODOLIST-TITLE' as const;
+export const CHANGE_FILTER = 'CHANGE-TODOLIST-FILTER' as const;
 
 type RemoveTodoListAT = {
   type: typeof REMOVE_TODOLIST;
@@ -24,7 +25,13 @@ type ChangeTodoListTitleAT = {
   title: string;
 };
 
-type ActionType = RemoveTodoListAT | AddTodoListAT | ChangeTodoListTitleAT;
+type ChangeTodoListFilterAT = {
+  type: typeof CHANGE_FILTER;
+  id: string;
+  filter: FilterValueType;
+};
+
+type ActionType = RemoveTodoListAT | AddTodoListAT | ChangeTodoListTitleAT | ChangeTodoListFilterAT;
 
 export const todolistReducer = (todoLists: TodoListType[], action: ActionType) => {
   switch (action.type) {
@@ -39,6 +46,8 @@ export const todolistReducer = (todoLists: TodoListType[], action: ActionType) =
       return [...todoLists, newTodolist];
     case 'CHANGE-TODOLIST-TITLE':
       return todoLists.map(t => (t.id === action.id ? { ...t, title: action.title } : t));
+    case 'CHANGE-TODOLIST-FILTER':
+      return todoLists.map(t => (t.id === action.id ? { ...t, filter: action.filter } : t));
     default:
       return todoLists;
   }
