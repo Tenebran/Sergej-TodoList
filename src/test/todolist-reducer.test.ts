@@ -76,5 +76,5 @@ test('correct todolist should change filter', () => {
   });
   //3.
   expect(endState[0].filter).toBe('all');
-  expect(endState[1].filter).toBe('active');
+  expect(endState[1].filter).toBe(newTodolistFilter);
 });
