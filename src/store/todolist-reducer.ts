@@ -3,7 +3,7 @@
 // 3. Вернуть новый стэйт
 import { TodoListType } from '../App';
 
-const REMOVE_TODOLIST = 'REMOVE-TODOLIST' as const;
+export const REMOVE_TODOLIST = 'REMOVE-TODOLIST' as const;
 
 type RemoveTodoListAT = {
   type: typeof REMOVE_TODOLIST;
