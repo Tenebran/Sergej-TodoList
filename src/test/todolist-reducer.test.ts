@@ -1,7 +1,8 @@
 import { v1 } from 'uuid';
-import { TodoListType } from '../App';
+import { FilterValueType, TodoListType } from '../App';
 import {
   ADD_TODOLIST,
+  CHANGE_FILTER,
   CHANGE_TITLE,
   REMOVE_TODOLIST,
   todolistReducer,
@@ -56,4 +57,24 @@ test('correct todolist should change its name', () => {
   //3.
   expect(endState[0].title).toBe('What to learn');
   expect(endState[1].title).toBe(newTodolistTitle);
+});
+
+test('correct todolist should change filter', () => {
+  //1.
+  const todolistId1 = v1();
+  const todolistId2 = v1();
+  const newTodolistFilter = 'active' as FilterValueType;
+  const startState: Array<TodoListType> = [
+    { id: todolistId1, title: 'What to learn', filter: 'all' },
+    { id: todolistId2, title: 'What to buy', filter: 'all' },
+  ];
+  //2.
+  const endState = todolistReducer(startState, {
+    type: CHANGE_FILTER,
+    id: todolistId2,
+    filter: newTodolistFilter,
+  });
+  //3.
+  expect(endState[0].filter).toBe('all');
+  expect(endState[1].filter).toBe('active');
 });
