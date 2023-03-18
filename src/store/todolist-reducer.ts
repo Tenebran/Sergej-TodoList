@@ -6,6 +6,7 @@ import { TodoListType } from '../App';
 
 export const REMOVE_TODOLIST = 'REMOVE-TODOLIST' as const;
 export const ADD_TODOLIST = 'ADD-TODOLIST' as const;
+export const CHANGE_TITLE = 'CHANGE-TODOLIST-TITLE' as const;
 
 type RemoveTodoListAT = {
   type: typeof REMOVE_TODOLIST;
@@ -17,21 +18,28 @@ type AddTodoListAT = {
   title: string;
 };
 
-export const todolistReducer = (
-  todolists: TodoListType[],
-  action: RemoveTodoListAT | AddTodoListAT
-) => {
+type ChangeTodoListTitleAT = {
+  type: typeof CHANGE_TITLE;
+  id: string;
+  title: string;
+};
+
+type ActionType = RemoveTodoListAT | AddTodoListAT | ChangeTodoListTitleAT;
+
+export const todolistReducer = (todoLists: TodoListType[], action: ActionType) => {
   switch (action.type) {
     case 'REMOVE-TODOLIST':
-      return todolists.filter(tl => tl.id !== action.id);
+      return todoLists.filter(tl => tl.id !== action.id);
     case 'ADD-TODOLIST':
       const newTodolist: TodoListType = {
         id: v1(),
         title: action.title,
         filter: 'all',
       };
-      return [...todolists, newTodolist];
+      return [...todoLists, newTodolist];
+    case 'CHANGE-TODOLIST-TITLE':
+      return todoLists.map(t => (t.id === action.id ? { ...t, title: action.title } : t));
     default:
-      return todolists;
+      return todoLists;
   }
 };
