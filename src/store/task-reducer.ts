@@ -3,7 +3,7 @@ import { FilterValueType, TasksStateType, TodoListType } from '../App';
 
 export const REMOVE_TASK = 'REMOVE-TASK' as const;
 export const ADD_TASK = 'ADD-TASK' as const;
-export const CHANGE_TITLE = 'CHANGE-TODOLIST-TITLE' as const;
+export const CHANGE_TASK_STATUS = 'CHANHE-TASK-STATUS' as const;
 export const CHANGE_FILTER = 'CHANGE-TODOLIST-FILTER' as const;
 
 type RemoveTaskAT = {
@@ -18,10 +18,11 @@ type AddTaskAT = {
   title: string;
 };
 
-type ChangeTodoListTitleAT = {
-  type: '';
-  id: 'string';
-  title: 'string';
+type ChangeTaskStatusAT = {
+  type: typeof CHANGE_TASK_STATUS;
+  id: string;
+  status: boolean;
+  todolistId: string;
 };
 
 type ChangeTodoListFilterAT = {
@@ -30,7 +31,7 @@ type ChangeTodoListFilterAT = {
   filter: FilterValueType;
 };
 
-type ActionType = RemoveTaskAT | AddTaskAT | ChangeTodoListTitleAT | ChangeTodoListFilterAT;
+type ActionType = RemoveTaskAT | AddTaskAT | ChangeTaskStatusAT | ChangeTodoListFilterAT;
 
 export const tasksReducer = (task: TasksStateType, action: ActionType) => {
   switch (action.type) {
@@ -49,8 +50,16 @@ export const tasksReducer = (task: TasksStateType, action: ActionType) => {
         ],
       };
 
+    case CHANGE_TASK_STATUS:
+      return {
+        ...task,
+        [action.todolistId]: task[action.todolistId].map(t =>
+          t.id === action.id ? { ...t, isDone: action.status } : t
+        ),
+      };
+
     default:
-      return;
+      return task;
   }
 };
 
@@ -60,4 +69,12 @@ export const removeTaskAC = (taskId: string, todolistId: string): RemoveTaskAT =
 
 export const addTaskAC = (title: string, todolistId: string): AddTaskAT => {
   return { type: 'ADD-TASK', title, todolistId };
+};
+
+export const changeTaskStatusAC = (
+  id: string,
+  status: boolean,
+  todolistId: string
+): ChangeTaskStatusAT => {
+  return { type: 'CHANHE-TASK-STATUS', id, status, todolistId };
 };
