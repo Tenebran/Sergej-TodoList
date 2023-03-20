@@ -2,13 +2,9 @@ import { v1 } from 'uuid';
 import { FilterValueType, TodoListType } from '../App';
 import {
   AddTodoListAC,
-  ADD_TODOLIST,
   ChangeTodoListFilterAC,
   ChangeTodoListTitleAC,
-  CHANGE_FILTER,
-  CHANGE_TITLE,
   RemoveTodoListAC,
-  REMOVE_TODOLIST,
   todolistReducer,
 } from '../store/todolist-reducer';
 
